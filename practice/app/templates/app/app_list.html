@@ -1,0 +1,43 @@
+{% extends 'app/layout.html' %}
+
+
+{% block content %}
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Отсортировать</button>
+    </form>
+<div style="width: 700px;">
+    <div style="display: flex; justify-content: space-between;">
+        <p>Дата заявки</p>
+        <p>Статус заявки</p>
+        <p>Категория</p>
+        <p>Имя заявки</p>
+        <p>Описание</p>
+    </div>
+
+    {% for i in queryset %}
+        <div style="display: flex; justify-content: space-between;">
+            <p>{{ i.date }}</p>
+            <p>{{ i.get_status_display}}</p>
+            <p>{{ i.Category }}</p>
+            <p>{{ i.name }}</p>
+            <p>{{ i.description }}</p>
+        </div>
+        <p><a class="btn btn-secondary btn-lg active" href="{% url 'handle' i.id %}">Редактировать заявку</a></p>
+        <button type="submit" class="btn btn-danger" id="btn_{{i.id}}" onclick="Btn('{{ i.id }}')">Удалить заявку</button>
+        <form action="{% url 'delete_request' i.id %}" method="GET" id="delete_{{i.id}}" style="display: none">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Подтвердить удаление</button>
+        </form>
+        <hr>
+</div>
+    {% endfor %}
+
+<script>
+function Btn(id){
+    document.getElementById('btn_' + id).style.display = 'none';
+    document.getElementById('delete_' + id).style.display = 'block';
+}
+</script>
+{% endblock %}

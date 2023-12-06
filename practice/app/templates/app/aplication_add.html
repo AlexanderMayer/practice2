@@ -1,0 +1,13 @@
+{% extends "app/layout.html" %}
+
+{% load static %}
+{% load bootstrap4 %}
+
+{% block content %}
+    <h3>Заполните заявку</h3>
+        <form method="post" action="{% url 'app_add' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Отправить заявку" class="btn btn-outline-dark">
+        </form>
+{% endblock %}

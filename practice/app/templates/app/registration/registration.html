@@ -1,0 +1,12 @@
+{% extends 'app/layout.html' %}
+
+
+{% block content %}
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Зарегистрироваться" class="btn btn-outline-dark">
+    </form>
+
+{% endblock %}

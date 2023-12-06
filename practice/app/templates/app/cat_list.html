@@ -1,0 +1,21 @@
+{% extends 'app/layout.html' %}
+
+{% load bootstrap4 %}
+
+{% block content %}
+<h3>Категории</h3>
+    {% for i in cat_list %}
+        <div style="display: flex;">
+            <p style="margin-right: 5%;">{{ i.name }}</p>
+            <form action="{% url 'delete_category' i.id %}" method="POST" >
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Удалить</button>
+        </form>
+        </div>
+    {% endfor %}
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Добавить категорию</button>
+    </form>
+{% endblock %}

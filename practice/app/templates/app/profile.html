@@ -1,0 +1,50 @@
+{% extends 'app/layout.html' %}
+
+{% load static %}
+{% load bootstrap4 %}
+
+{% block content %}
+<h3>Здравствуйте, {{ user.username }}</h3>
+
+<h3>Ваши заявки</h3>
+<br>
+<div style="margin-bottom: 20px;">
+    <a href="{% url 'profile' 'all' %}" class="btn btn-secondary btn-lg active">Показать все заявки</a>
+    <a href="{% url 'app_filter' 'new' %}" class="btn btn-secondary btn-lg active">Показать Новые заявки</a>
+    <a href="{% url 'app_filter' 'haired' %}" class="btn btn-secondary btn-lg active">Показать заявки, принятые в работу</a>
+    <a href="{% url 'app_filter' 'done' %} " class="btn btn-secondary btn-lg active">Показать выполненные заявки</a>
+</div>
+{% if my_app_list %}
+<div>
+    {% for i in my_app_list %}
+    <div class="card">
+        <div class="card-body">
+            <p>Дата создания заявки: {{ i.date }}</p>
+            <p>Название заявки: {{ i.name }}</p>
+            <p>Описание: {{ i.description }}</p>
+            <p>Категория: {{ i.Category }}</p>
+            <p>Статус: {{ i.get_status_display }}</p>
+            <div style="margin-bottom: 15px;"><p>Фото заявки</p><img style="max-width: 650px;" src="{{ i.photo_file.url }}" alt='фото'></div>
+            {% if i.photo_file2 and i.photo_file2.url %}
+            <div style="margin-bottom: 15px;"><p>Фото готовой заявки</p><img style="max-width: 650px;" src="{{ i.photo_file2.url }}" alt='фото готовой заявки'></div>
+            {% endif %}
+            <button type="submit" class="btn btn-danger" id="btn_{{i.id}}" onclick="Btn('{{ i.id }}')">Удалить заявку</button>
+            <form action="{% url 'delete_request' i.id %}" method="POST" id="delete_{{i.id}}" style="display: none">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Подтвердить удаление</button>
+            </form>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<p>У вас нет заявок</p>
+{% endif %}
+
+<script>
+function Btn(id){
+    document.getElementById('btn_' + id).style.display = 'none';
+    document.getElementById('delete_' + id).style.display = 'block';
+}
+</script>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends 'app/layout.html' %}
+
+{% block title%}Главная страница{% endblock%}
+
+{% block content%}
+<h3>Наши последние заявки</h3>
+<br>
+<h5>Количество заявко в работе на данный момент: {{ app_haired }} </h5>
+<br>
+<div>
+    {% for i in app_last %}
+    <div class="card">
+        <div class="card-body">
+            <p>Дата создания заявки: {{ i.date }}</p>
+            <p>Название заявки: {{ i.name }}</p>
+            <p>Категория: {{ i.Category }}</p>
+            <p>Описание: {{ i.description }}</p>
+            <div style="margin-bottom: 15px;"><p>Фото заявки</p><img style="max-width: 650px;" src="{{ i.photo_file.url }}" alt='фото'></div>
+            {% if i.photo_file2 and i.photo_file2.url %}
+            <div style="margin-bottom: 15px;"><p>Фото готовой заявки</p><img style="max-width: 650px;" src="{{ i.photo_file2.url }}" alt='фото готовой заявки'></div>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock%}
